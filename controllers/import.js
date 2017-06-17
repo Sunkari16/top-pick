@@ -16,7 +16,12 @@ class SearchController {
             .then(() => {
                 res.json({ message : 'success'});
             })
-            .catch(next);
+            .catch(err=>{
+                if(err.statusCode===404){
+                    err.message="Project doesnt have packge.json";
+                }
+                next(err);
+            });
     }
 }
 module.exports =SearchController;
