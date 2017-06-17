@@ -9,6 +9,14 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var search = require('./routes/search');
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/top-pack');
+mongoose.set('debug', true);
+mongoose.connection.once('open', function callback() {
+    console.info('\nSuccessfully connected to the database \n');
+});
+
+require('./models/models');
 var app = express();
 
 // view engine setup
