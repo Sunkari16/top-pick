@@ -26,6 +26,9 @@ app.service('HttpService', ['$http', function ($http) {
     this.import =function (repo,owner) {
         return $http.get('/import?repo=' + repo+'&owner='+owner);
     };
+    this.getTopPacks =  function () {
+        return $http.get('top-packs' );
+    }
 }]);
 
 
@@ -45,11 +48,21 @@ app.controller('SearchController', ["$scope", "HttpService", function ($scope, H
         HttpService.import(repo.name, repo.owner.login)
             .then(()=>{
                 repo.impoted = true;
+                self.getTopPacks();
             })
             .catch((err)=>{
 
             })
 
     };
+
+    this.topPacks = null;
+    self.getTopPacks = function () {
+        HttpService.getTopPacks()
+            .then(res => {
+                this.topPacks = res.data;
+            })
+    };
+    self.getTopPacks();
 }]);
 

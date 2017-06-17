@@ -14,6 +14,7 @@ class TopPackService {
                     count: {$sum: 1}
                 }
             },
+            {$sort: {count :-1}},
             {$limit: 10}
         ];
         const PackageDetailsSchema = Models.PackageDetailsSchema;
