@@ -4,10 +4,15 @@
 var app = angular.module('top-pack', [
     'ngAnimate',
     'ui.router',
-    'toastr'
-]).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', 'toastrConfig',
-    function ($stateProvider, $httpProvider, $urlRouterProvider, toastrConfig) {
-
+    'toastr',
+]).config(['$stateProvider',  '$urlRouterProvider', 'toastrConfig',
+    function ($stateProvider, $urlRouterProvider, toastrConfig) {
+        angular.extend(toastrConfig, {
+            allowHtml: false,
+            positionClass: 'toast-top-full-width',
+            tapToDismiss: true,
+            timeOut: 5000
+        });
         $stateProvider.state('/home', {
             url: '/',
             templateUrl: 'sections/search/search.html'
@@ -32,16 +37,19 @@ app.service('HttpService', ['$http', function ($http) {
 }]);
 
 
-app.controller('SearchController', ["$scope", "HttpService", function ($scope, HttpService) {
+app.controller('SearchController', ["$scope", "HttpService",'toastr', function ($scope, HttpService,toastr) {
     var self = $scope;
 
     self.search = function()
     {
+        if(!self.key){
+            return  toastr.error("Enter a valid key to search repos");
+        }
         HttpService.search(self.key)
             .then(function (result) {
                 self.searchResults = result? result.data.items :[];
             }, function (err) {
-                console.log(err);
+                toastr.error(err.message||err.data.message);
             });
     };
     self.import = function (repo) {
@@ -49,9 +57,8 @@ app.controller('SearchController', ["$scope", "HttpService", function ($scope, H
             .then(()=>{
                 repo.imported = true;
                 self.getTopPacks();
-            })
-            .catch((err)=>{
-
+            }, function(err){
+                toastr.error(err.message||err.data.message);
             })
 
     };
@@ -61,6 +68,8 @@ app.controller('SearchController', ["$scope", "HttpService", function ($scope, H
         HttpService.getTopPacks()
             .then(res => {
                 this.topPacks = res.data;
+            }, function(err){
+                toastr.error(err.message||err.data.message);
             })
     };
     self.getTopPacks();
