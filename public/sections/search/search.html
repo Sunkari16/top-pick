@@ -1,21 +1,52 @@
 <div ng-controller="SearchController">
-    <div class="row">
-        <div class="col-md-10">
-            <div class="col-lg-4"><input type="text" ng-model="key"></div>
-            <div class="col-md-2">
-                <button ng-click="search()"> Search</button>
-            </div>
-        </div>
-    </div>
+
 
     <div class="row">
-        <div class="col-md-offset-1 col-md-10">
-            <div>
-                <div class="row" ng-repeat="repo in searchResults ">
-                    <div  class="col-md-3">{{repo.name}}({{repo.full_name}})</div>
-                    <div class="col-md-3" >{{repo.stargazers_count}}</div>
-                    <div class="col-md-3"  ng-hide="repo.imported"><button ng-click="import(repo)" >{{repo.imported?"Imported":"Import"}}</button> </div>
-                    <div class="col-md-3"  ng-show="repo.imported"><h3>Imported</h3> </div>
+        <div class="col-md-offset-4 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-offset-1  col-md-8"><input type="text" ng-model="key"></div>
+                    <div class="col-md-2">
+                        <button ng-click="search()" type="button" class="btn btn-default"> Search</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h3 style="text-align: center">Results</h3>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-3">Name(full name)</div>
+                        <div class="col-md-3">Stars</div>
+                        <div class="col-md-3">Forks</div>
+                        <div class="col-md-3">Import</div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="col-md-offset-1 col-md-10">
+                        <div>
+                            <div class="row" ng-repeat="repo in searchResults ">
+                                <div class=" col-md-12" ng-class="{alert : repo.imported, 'alert-success': repo.imported}" role="alert">
+                                    <div class="col-md-3">{{repo.name}}({{repo.full_name}})</div>
+                                    <div class="col-md-3">{{repo.stargazers_count}}</div>
+                                    <div class="col-md-3">{{repo.forks}}</div>
+                                    <div class="col-md-3" ng-hide="repo.imported">
+                                        <button type="button" class="btn btn-default" ng-click="import(repo)">
+                                            {{repo.imported?"Imported":"Import"}}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3" ng-show="repo.imported">Imported</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,14 +56,26 @@
     <br>
     <br>
     <div class="row" ng-show="topPacks">
-        <h1> TOP Packs</h1>
-        <div class="row" >
-            <div class="col-md-offset-1 col-md-3 ">Package name</div>
-            <div class="col-md-3">Usage count</div>
+
+        <div class="col-md-offset-2 col-md-8">
+            <h1 style="text-align: center"> TOP Packs</h1>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-3 ">Package name</div>
+                        <div class="col-md-3">Usage count</div>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row" ng-repeat="topPack in topPacks">
+                        <div class="col-md-offset-3 col-md-3 ">{{ topPack._id}}</div>
+                        <div class="col-md-3">{{ topPack.count}}</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row" ng-repeat="topPack in topPacks">
-            <div class="col-md-offset-1 col-md-3 ">{{ topPack._id}}</div>
-            <div class="col-md-3">{{ topPack.count}}</div>
-        </div>
+
     </div>
 </div>
