@@ -11,7 +11,7 @@ class ImportService {
             repo: repo,
             owner: owner,
             data: content,
-            dependencies: _.keys(_.get(content, 'dependencies'))
+            dependencies: _.keys(_.get(content, 'dependencies')).concat(_.keys(_.get(content, 'devDependencies')))
         })
         return packageDetails.save();
     }
