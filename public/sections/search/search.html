@@ -22,9 +22,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-3">Name(full name)</div>
-                        <div class="col-md-3">Stars</div>
-                        <div class="col-md-3">Forks</div>
+                        <div class="col-md-5">Name(full name)</div>
+                        <div class="col-md-2">Stars</div>
+                        <div class="col-md-2">Forks</div>
                         <div class="col-md-3">Import</div>
                     </div>
                 </div>
@@ -34,9 +34,9 @@
                         <div>
                             <div class="row" ng-repeat="repo in searchResults ">
                                 <div class=" col-md-12" ng-class="{alert : repo.imported, 'alert-success': repo.imported}" role="alert">
-                                    <div class="col-md-3">{{repo.name}}({{repo.full_name}})</div>
-                                    <div class="col-md-3">{{repo.stargazers_count}}</div>
-                                    <div class="col-md-3">{{repo.forks}}</div>
+                                    <div class="col-md-5">{{repo.name}}({{repo.full_name}})</div>
+                                    <div class="col-md-2">{{repo.stargazers_count}}</div>
+                                    <div class="col-md-2">{{repo.forks}}</div>
                                     <div class="col-md-3" ng-hide="repo.imported">
                                         <button type="button" class="btn btn-default" ng-click="import(repo)">
                                             {{repo.imported?"Imported":"Import"}}

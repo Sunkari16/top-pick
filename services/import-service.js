@@ -18,9 +18,9 @@ class ImportService {
 
     static importPackageJson(repo, owner) {
         const PackageDetailsSchema = Models.PackageDetailsSchema;
-        return PackageDetailsSchema.findOne({repo : repo, owner: owner})
+        return PackageDetailsSchema.findOne({repo: repo, owner: owner})
             .then(packageDetails => {
-                if(packageDetails){
+                if (packageDetails) {
                     return packageDetails;
                 }
                 return GithubContentManager.fetchPackageJSON(repo, owner)
@@ -32,6 +32,27 @@ class ImportService {
                     })
             })
 
+    }
+
+    static updatePackageJson(pckg) {
+        function save(content, pckg) {
+            pckg.data = content;
+            pckg.dependencies = _.keys(_.get(content, 'dependencies')).concat(_.keys(_.get(content, 'devDependencies')));
+            return pckg.save()
+        }
+
+        GithubContentManager.fetchPackageJSON(pckg.repo, pckg.owner)
+            .then(content => {
+                if (typeof content == 'string') {
+                    content = JSON.parse(content);
+                }
+                if (pckg instanceof Models.PackageDetailsSchema) {
+                    return save(content, pckg);
+                } else {
+                    return Models.PackageDetailsSchema.findOne({repo: pckg.repo, owner: pckg.owner})
+                        .then(save.bind(content));
+                }
+            });
     }
 }
 
