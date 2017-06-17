@@ -17,13 +17,21 @@ class ImportService {
     }
 
     static importPackageJson(repo, owner) {
-        return GithubContentManager.fetchPackageJSON(repo, owner)
-            .then(content => {
-                if (typeof content == 'string') {
-                    content = JSON.parse(content);
+        const PackageDetailsSchema = Models.PackageDetailsSchema;
+        return PackageDetailsSchema.findOne({repo : repo, owner: owner})
+            .then(packageDetails => {
+                if(packageDetails){
+                    return packageDetails;
                 }
-                return this._savePackageJOSNToDB(repo, owner, content);
+                return GithubContentManager.fetchPackageJSON(repo, owner)
+                    .then(content => {
+                        if (typeof content == 'string') {
+                            content = JSON.parse(content);
+                        }
+                        return this._savePackageJOSNToDB(repo, owner, content);
+                    })
             })
+
     }
 }
 

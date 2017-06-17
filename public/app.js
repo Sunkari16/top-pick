@@ -22,12 +22,16 @@ app.controller('AppController', function () {
 app.service('HttpService', ['$http', function ($http) {
     this.search = function (key) {
         return $http.get('/search?q=' + key)
-    }
+    };
+    this.import =function (repo,owner) {
+        return $http.get('/import?repo=' + repo+'&owner='+owner);
+    };
 }]);
 
 
 app.controller('SearchController', ["$scope", "HttpService", function ($scope, HttpService) {
     var self = $scope;
+
     self.search = function()
     {
         HttpService.search(self.key)
@@ -36,6 +40,16 @@ app.controller('SearchController', ["$scope", "HttpService", function ($scope, H
             }, function (err) {
                 console.log(err);
             });
-    }
+    };
+    self.import = function (repo) {
+        HttpService.import(repo.name, repo.owner.login)
+            .then(()=>{
+                repo.impoted = true;
+            })
+            .catch((err)=>{
+
+            })
+
+    };
 }]);
 
