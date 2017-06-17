@@ -3,9 +3,11 @@
  */
 const mongoose = require('mongoose');
 const SearchResultsSchema = require('./github-search-results');
+const PackageDetailsSchema = require('./github-package-json');
 
 const models = {
-    SearchResults: mongoose.model("SearchResults", SearchResultsSchema)
+    SearchResults: mongoose.model("SearchResults", SearchResultsSchema),
+    PackageDetailsSchema: mongoose.model("PackageDetailsSchema", PackageDetailsSchema)
 }
 
 
