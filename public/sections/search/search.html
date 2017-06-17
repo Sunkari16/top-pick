@@ -14,7 +14,8 @@
                 <div class="row" ng-repeat="repo in searchResults ">
                     <div  class="col-md-3">{{repo.name}}({{repo.full_name}})</div>
                     <div class="col-md-3" >{{repo.stargazers_count}}</div>
-                    <div class="col-md-3" ><button ng-click="import(repo)" >{{repo.impoted?"Imported":"Import"}}</button></div>
+                    <div class="col-md-3"  ng-hide="repo.imported"><button ng-click="import(repo)" >{{repo.imported?"Imported":"Import"}}</button> </div>
+                    <div class="col-md-3"  ng-show="repo.imported"><h3>Imported</h3> </div>
                 </div>
             </div>
         </div>

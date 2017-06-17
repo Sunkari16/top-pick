@@ -47,7 +47,7 @@ app.controller('SearchController', ["$scope", "HttpService", function ($scope, H
     self.import = function (repo) {
         HttpService.import(repo.name, repo.owner.login)
             .then(()=>{
-                repo.impoted = true;
+                repo.imported = true;
                 self.getTopPacks();
             })
             .catch((err)=>{
