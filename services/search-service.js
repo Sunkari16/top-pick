@@ -22,7 +22,9 @@ class SearchService {
     }
     static _markPreImported(result){
         const repos=  result.items;
-
+        if(_.isEmpty(repos)){
+            return result;
+        }
         const PackageDetailsSchema = Models.PackageDetailsSchema;
         const repoAndOwnerMap = _.map(repos, repo => { return {repo: repo.name, owner : _.get(repo, 'owner.login')}});
         const reposMap = _.keyBy(repos, repo=> {return repo.name+'_'+ _.get(repo, 'owner.login')});
@@ -36,7 +38,7 @@ class SearchService {
                     }
                 })
             } )
-            .then(()=>{console.log(result); return result});
+            .then(()=>{ return result});
     }
 
     static search(q, sort, order) {
@@ -51,6 +53,9 @@ class SearchService {
                 return GithubSearchService.search(q, sort, order)
                     .then(result => {
                         // console.log(result);
+                        if(_.isEmpty(result.items)){
+                            return result;
+                        }
                         this._saveResults(q, sort, order, result);
                         return result;
                     });
