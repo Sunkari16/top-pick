@@ -19,6 +19,16 @@ class SearchService {
         searchResults.save().then(data => {
             console.log(" Results saved for key " + key)
         });
+        const GitHubReposSchema = Models.GitHubRepos;
+        console.log("count repos in reslutl "+result.items.length);
+        const gitHupRepos =[];
+        _.each(result.items, repo => {
+            console.log(repo.name);
+            gitHupRepos.push((new GitHubReposSchema(repo)).save());
+        });
+        Promise.all(gitHupRepos).then(data => {
+            console.log("saved the repos " + data.length)
+        }).catch(console.error);
     }
     static _markPreImported(result){
         const repos=  result.items;
